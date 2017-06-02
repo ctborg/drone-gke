@@ -289,14 +289,14 @@ func wrapMain() error {
 		}
 
 		// Ensure the namespace exists, without errors (unlike `kubectl create namespace`).
-		err = runner.Run(vargs.KubectlCmd, "apply", "--filename", nsPath)
+		err = runner.Run(vargs.KubectlCmd, "apply", "--record", "--filename", nsPath)
 		if err != nil {
 			return fmt.Errorf("Error: %s\n", err)
 		}
 	}
 
 	// Apply Kubernetes configuration files.
-	err = runner.Run(vargs.KubectlCmd, "apply", "--filename", strings.Join(pathArg, ","))
+	err = runner.Run(vargs.KubectlCmd, "apply", "--record", "--filename", strings.Join(pathArg, ","))
 	if err != nil {
 		return fmt.Errorf("Error: %s\n", err)
 	}
