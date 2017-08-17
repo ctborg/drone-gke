@@ -8,5 +8,5 @@ metadata:
 type: Opaque
 
 data:
-  api-token: {{.SECRET_API_TOKEN}}
-  p12-cert: {{.SECRET_BASE64_P12_CERT}}
+  api-token: {{.SECRET_API_TOKEN | b64enc}}
+  p12-cert: {{.SECRET_P12_CERT}}
