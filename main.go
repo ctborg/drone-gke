@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -204,12 +203,7 @@ func run(c *cli.Context) error {
 			return fmt.Errorf("Error: secret var %q is an empty string\n", k)
 		}
 
-		if strings.HasPrefix(k, "SECRET_BASE64_") {
-			secrets[k] = v
-		} else {
-			// Base64 encode secret strings for Kubernetes.
-			secrets[k] = base64.StdEncoding.EncodeToString([]byte(v))
-		}
+		secrets[k] = v
 
 		os.Unsetenv(k)
 	}
