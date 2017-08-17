@@ -56,9 +56,12 @@ drone secret add \
 
 ## Secrets
 
-`drone-gke` also supports creating Kubernetes secrets for you. These secrets should be passed from Drone secrets to the plugin as environment variables with targets with the prefix `secret_`. These secrets will be used as variables in the `secret_template` in their environment variable form (uppercased).
+`drone-gke` also supports creating Kubernetes secrets.
+These secrets should be passed from Drone secrets to the plugin as environment variables with targets with the prefix `secret_`.
+These secrets will be used as variables in the `secret_template` in their environment variable form (uppercased).
 
-Kubernetes expects secrets to be base64 encoded, `drone-gke` does that for you. If you pass in a secret that is already base64 encoded, please apply the prefix `secret_base64_` and the plugin will not re-encode them.
+Kubernetes expects secrets to be base64 encoded.
+If using a secret that is not already base64 encoded, use the `| b64enc` function in the `secret_template` to encode the value.
 
 ## Example reference usage
 
@@ -109,10 +112,10 @@ pipeline:
     secrets:
       - source: GOOGLE_CREDENTIALS
         target: token
-      - source: API_TOKEN
+      - source: API_TOKEN        # value is "123"
         target: secret_api_token
-      - source: P12_CERT
-        target: secret_base64_p12_cert
+      - source: P12_CERT         # value is "cDEyCg=="
+        target: secret_p12_cert
     when:
       event: push
       branch: master
@@ -185,6 +188,6 @@ metadata:
 type: Opaque
 
 data:
-  api-token: {{.SECRET_API_TOKEN}}
-  p12-cert: {{.SECRET_BASE64_P12_CERT}}
+  api-token: {{.SECRET_API_TOKEN | b64enc}} # need to b64 encode this
+  p12-cert: {{.SECRET_P12_CERT}}            # already b64 encoded
 ```

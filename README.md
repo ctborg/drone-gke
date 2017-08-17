@@ -60,7 +60,7 @@ $ docker run --rm \
   -e PLUGIN_VARS="$(cat vars.json)" \
   -e TOKEN="$(cat $GOOGLE_APPLICATION_CREDENTIALS)" \
   -e SECRET_API_TOKEN=123 \
-  -e SECRET_BASE64_P12_CERT="cDEyCg==" \
+  -e SECRET_P12_CERT="cDEyCg==" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   nytimes/drone-gke --dry-run --verbose
