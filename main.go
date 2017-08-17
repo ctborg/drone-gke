@@ -9,6 +9,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/Masterminds/sprig"
 	"github.com/urfave/cli"
 )
 
@@ -327,10 +328,7 @@ func run(c *cli.Context) error {
 		}
 
 		// Parse the template.
-		tmpl, err := template.New(t).Option("missingkey=error").Parse(string(blob))
-		if err != nil {
-			return fmt.Errorf("Error parsing template: %s\n", err)
-		}
+		tmpl := template.Must(template.New(t).Funcs(sprig.TxtFuncMap()).Option("missingkey=error").Parse(string(blob)))
 
 		// Generate the manifest.
 		err = tmpl.Execute(f, content)
